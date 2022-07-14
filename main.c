@@ -128,7 +128,7 @@ void main(int argc, char ** argv){
     int size = 0,Const_t;
     NODE * node = (NODE *)malloc(sizeof(NODE) * size);
     printf("Defina um valor inteiro para t(2 é o menor valor aceito)");
-    scanf("%d",Const_t);
+    scanf("%d",&Const_t);
     if(Const_t<2){printf("Valor menor que 2 não aceito, prosseguiremos com o valor 2 por padrão");Const_t=2;}
     for (int i = 1; i < argc; i++)
     {
@@ -141,7 +141,7 @@ void main(int argc, char ** argv){
             node = NODE_Insere(node,counter,argv[i],&size);
             while(1){
                 VAL buffer;
-                lenght = fread(buffer.texto,SEEK_CUR,TAM - 1,fp);
+                lenght = fread(buffer.texto,1,TAM - 1,fp);
                 if(!lenght){
                     break;
                 }
