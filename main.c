@@ -151,11 +151,10 @@ void main(int argc, char ** argv){
                 buffer.texto[lenght] = '\0';
                 buffer.id = counter;
                 buffer.prox_id = ++counter;
-                if(lenght < TAM - 1) {
-                    buffer.prox_id = -1;
-                }
                 arv = TARVB_Insere(arv,buffer,Const_t);
             }
+            VAL * v = VAL_Busca_Ponteiro(arv,counter - 1);
+            v->prox_id = -1;
         }
         fclose(fp);
         
