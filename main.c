@@ -144,7 +144,6 @@ void main(int argc, char ** argv){
             while(1){
                 VAL buffer;
                 lenght = fread(buffer.texto,1,TAM - 1,fp);
-                printf("%d\n",lenght);
                 if(!lenght){
                     break;
                 }
@@ -179,6 +178,8 @@ void main(int argc, char ** argv){
              for (int i = 0; i < size; i++)
             {
                 Arq_Out(arv,node[i]);
+                TARVB_Libera(arv);
+                free(node);
             }
             break;
         }
