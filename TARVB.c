@@ -1,4 +1,5 @@
 #include "TARVB.h"
+#include "print_without_newline.c"
 
 TARVB *TARVB_Cria(int t){
   TARVB* novo = (TARVB*)malloc(sizeof(TARVB));
@@ -115,7 +116,10 @@ void imp_rec(TARVB *a, int andar){
     for(i=0; i<=a->nchaves-1; i++){
       imp_rec(a->filho[i],andar+1);
       for(j=0; j<=andar; j++) printf("\t");
-      printf("|%d|%s|%d|\n\n", a->chave[i].id,a->chave[i].texto,a->chave[i].prox_id);
+      printf("|%d|", a->chave[i].id);
+      print_without_newline(a->chave[i].texto);
+      printf("|%d|\n\n",a->chave[i].prox_id);
+
     }
     imp_rec(a->filho[i],andar+1);
   }

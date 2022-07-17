@@ -1,5 +1,18 @@
 #include "TARVB.h"
 
+
+void print_char(char * string){
+  for (int i = 0; i < strlen(string); i++)
+  {
+    if(string[i] != '\n'){
+      printf("%c",string[i]);
+    }else{
+      printf("\\n");
+    } 
+  }
+  
+}
+
 TARVB *TARVB_Cria(int t){
   TARVB* novo = (TARVB*)malloc(sizeof(TARVB));
   novo->nchaves = 0;

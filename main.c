@@ -22,7 +22,9 @@ int Imprimir_Arquivo(NODE node, TARVB * arv){
     int resp = -1;
     while (buffer.id != -1)
     {
-        printf("%d: %s\n",buffer.id,buffer.texto);
+        printf("%d: ",buffer.id);
+        print_without_newline(buffer.texto);
+        printf("\n");
         resp = buffer.id;
         buffer = VAL_Busca(arv,buffer.prox_id);
     }
@@ -142,17 +144,21 @@ void main(int argc, char ** argv){
             while(1){
                 VAL buffer;
                 lenght = fread(buffer.texto,1,TAM - 1,fp);
+                printf("%d\n",lenght);
                 if(!lenght){
                     break;
                 }
                 buffer.texto[lenght] = '\0';
                 buffer.id = counter;
                 buffer.prox_id = ++counter;
-                if(lenght < TAM - 1) buffer.prox_id = -1;
+                if(lenght < TAM - 1) {
+                    buffer.prox_id = -1;
+                }
                 arv = TARVB_Insere(arv,buffer,Const_t);
             }
         }
         fclose(fp);
+        
     }
     TARVB_Imprime(arv);
     int num = 0;
