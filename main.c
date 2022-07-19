@@ -51,7 +51,7 @@ void Arq_Out(TARVB *arv, NODE node){
     printf("\n");
 }
 
-void Arq_Out_Inv(TARVB *arv, NODE node){
+void Arq_Out_Inv(TARVB *arv, NODE node){//A terminar, problema na logica?
     if(!arv){printf("Árvore não encontrada");return;}
     int count=0;
     FILE *arq;
@@ -129,9 +129,9 @@ void main(int argc, char ** argv){
     int counter = 1;
     int size = 0,Const_t;
     NODE * node = (NODE *)malloc(sizeof(NODE) * size);
-    printf("Defina um valor inteiro para t(2 é o menor valor aceito)");
+    printf("Defina um valor inteiro para t(2 é o menor valor aceito) ");
     scanf("%d",&Const_t);
-    if(Const_t<2){printf("Valor menor que 2 não aceito, prosseguiremos com o valor 2 por padrão");Const_t=2;}
+    if(Const_t<2){printf("Valor menor que 2 não aceito, prosseguiremos com o valor 2 por padrão ");Const_t=2;}
     for (int i = 1; i < argc; i++)
     {
         fp = fopen(argv[i], "rb");
@@ -163,78 +163,85 @@ void main(int argc, char ** argv){
     char string[255];
     int last_pos;
     while(1){
-        printf("Formato numero arquivo\n"
-               "0: adicionar\n"
-               "1: retirar\n"
-               "2: apagar arquivo\n"
-               "3: imprimir arquivo\n"
-               "4: imprimir tabela\n"
-               "5: imprimir arvore\n"
-               "6: imprimir arquivo invertido\n"
-               "-1: sair\n");
-        scanf("%d %s",&num,string);
+        printf("------------------\n"
+               "0: Adicionar\n"
+               "1: Retirar\n"
+               "2: Apagar arquivo\n"
+               "3: Imprimir arquivo\n"
+               "4: Imprimir tabela\n"
+               "5: Imprimir arvore\n"
+               "-1: Sair\n"
+               "------------------\n");
+        scanf("%d",&num);
+        if(num==4 || num==5)goto there;
+        if(num==-1)goto here;
+        printf("Informe o arquivo\n");
+        scanf("%s",string);
         int pos =  NODE_Busca(node,size,string);
-        if(num == -1) {
-             for (int i = 0; i < size; i++)
-            {
-                Arq_Out(arv,node[i]);
-                TARVB_Libera(arv);
-                free(node);
+        here:
+            if(num == -1) {
+                for (int i = 0; i < size; i++)
+                {
+                    Arq_Out(arv,node[i]);
+                    TARVB_Libera(arv);
+                    free(node);
+                }
+
+                break;
             }
-            break;
-        }
         if(pos == -1 && num >= 0 && num <= 3) {
             printf("Arquivo nao existe\n\n");
             continue;
         }
-        switch (num)
-        {
-        case 0:
-            last_pos = Imprimir_Arquivo(node[pos],arv);
-            int pos1,pos2;
-            printf("adicionar entre as posicoes: ");
-            scanf("%d %d",&pos1, &pos2);
-            printf("Insira o texto de tamanho %d: ",TAM - 1);
-            char string[TAM];
-            scanf("%s",string);
-            if(strlen(string) > TAM){
-                printf("Tamanho maior que %d\n",TAM - 1);
+        there:
+            switch (num)
+            {
+            case 0:
+                last_pos = Imprimir_Arquivo(node[pos],arv);
+                int pos1,pos2;
+                printf("Adicionar entre as posicoes: ");
+                scanf("%d %d",&pos1,&pos2);
+                printf("Insira o texto de tamanho %d: ",TAM - 1);
+                char string[TAM];
+                scanf("%s",string);
+                if(strlen(string) > TAM){
+                    printf("Tamanho maior que %d\n",TAM - 1);
+                    break;
+                }
+                VAL buffer;
+                buffer.id = counter++;
+                buffer.prox_id = pos2;
+                strcpy(buffer.texto,string);
+                arv = Inserir_na_Posicao(arv,&node[pos],Const_t,buffer,pos1,pos2,last_pos);
+                break;
+            case 1:
+                Imprimir_Arquivo(node[pos],arv);
+                pos1;
+                printf("Insira a posicao a retirar\n");
+                scanf("%d",&pos1);
+                arv = Retira_na_Posicao(arv,node,size,pos1,Const_t);
+                break;
+            case 2:
+                arv = Retirar_Arquivo(arv,node[pos],Const_t);
+                node = NODE_Retira(node,node[pos].nome,&size);
+                break;
+            case 3:
+                Imprimir_Arquivo(node[pos],arv);
+                break;
+            case 4:
+                NODE_Imprime(node,size);
+                break;
+            case 5:
+                TARVB_Imprime(arv);
+                break;
+            //case 6:
+            //for (int i = 0; i < size; i++)
+                //{
+               // Arq_Out_Inv(arv,node[pos]);
+              //  }
+               // break;
+            default:
                 break;
             }
-            VAL buffer;
-            buffer.id = counter++;
-            buffer.prox_id = pos2;
-            strcpy(buffer.texto,string);
-            arv = Inserir_na_Posicao(arv,&node[pos],Const_t,buffer,pos1,pos2,last_pos);
-            break;
-        case 1:
-            Imprimir_Arquivo(node[pos],arv);
-            pos1;
-            printf("Insira a posicao a retirar\n");
-            scanf("%d",&pos1);
-            arv = Retira_na_Posicao(arv,node,size,pos1,Const_t);
-            break;
-        case 2:
-            arv = Retirar_Arquivo(arv,node[pos],Const_t);
-            node = NODE_Retira(node,node[pos].nome,&size);
-            break;
-        case 3:
-            Imprimir_Arquivo(node[pos],arv);
-            break;
-        case 4:
-            NODE_Imprime(node,size);
-            break;
-        case 5:
-            TARVB_Imprime(arv);
-            break;
-        case 6:
-         for (int i = 0; i < size; i++)
-            {
-            Arq_Out_Inv(arv,node[pos]);
-            }
-            break;
-        default:
-            break;
         }
     }
-}
