@@ -183,9 +183,9 @@ void main(int argc, char ** argv){
                 for (int i = 0; i < size; i++)
                 {
                     Arq_Out(arv,node[i]);
-                    TARVB_Libera(arv);
-                    free(node);
                 }
+                TARVB_Libera(arv);
+                free(node);
 
                 break;
             }
